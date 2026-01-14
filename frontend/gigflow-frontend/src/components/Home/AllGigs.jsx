@@ -47,17 +47,23 @@ function AllGigs() {
     <p className="text-gray-500 mt-10 text-2xl font-semibold">No gigs found</p>
    )}
 
-   {filteredGigs && filteredGigs.map((gig) => (
-    <Link to={`/gigs/${gig._id}`} key={gig._id} className="w-full rounded-4xl py-5 px-10 border border-gray-300 flex justify-between items-center cursor-pointer hover:bg-gray-100">
-     <div className="flex flex-col justify-center items-start gap-3">
-      <h1 className="text-xl font-extrabold">{gig.title}</h1>
-      <p className="text-md font-semibold">{gig.description}</p>
-     </div>
-     <div className="flex flex-col justify-center items-start gap-3">
-      <span className="text-xl font-semibold">₹ {gig.budget}</span>
-     </div>
-    </Link>
-   ))}
+   <div className="w-full flex flex-col gap-5 max-h-[50vh] overflow-y-auto"
+   style={{
+    scrollbarWidth: "none",
+    msOverflowStyle: "none"
+   }}>
+    {filteredGigs && filteredGigs.map((gig) => (
+        <Link to={`/gigs/${gig._id}`} key={gig._id} className="rounded-4xl py-5 px-10 border border-gray-300 flex justify-between items-center cursor-pointer hover:bg-gray-100">
+        <div className="flex flex-col justify-center items-start gap-3">
+        <h1 className="text-xl font-extrabold">{gig.title}</h1>
+        <p className="text-md font-semibold">{gig.description}</p>
+        </div>
+        <div className="flex flex-col justify-center items-start gap-3">
+        <span className="text-xl font-semibold">₹ {gig.budget}</span>
+        </div>
+        </Link>
+    ))}
+   </div>
   </div>
  )
 }
