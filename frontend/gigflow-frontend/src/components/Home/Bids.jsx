@@ -55,7 +55,7 @@ function Bids() {
      )}
     </tbody>
    </table>
-   <div className="flex justify-center items-center gap-4 mt-10">
+   {paginatedBids.length > 0 && (<div className="flex justify-center items-center gap-4 mt-10">
  <button
   disabled={currentPage === 1}
   onClick={() => setCurrentPage((p) => p - 1)}
@@ -75,7 +75,7 @@ function Bids() {
  >
   Next
  </button>
-</div>
+</div>)}
   </div>
  )
 }
