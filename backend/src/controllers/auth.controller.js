@@ -66,8 +66,10 @@ export const login = async (req, res) => {
 
  res.cookie("token", token, {
   httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
   sameSite: "none",
-  secure: process.env.NODE_ENV === "production"
+  path: "/",
+  maxAge: 7 * 24 * 60 * 60 * 1000
  });
 
  res.status(200).json({
@@ -78,7 +80,8 @@ export const login = async (req, res) => {
    email: user.email
   }
  });
-}
+};
+
 
 export const profile = async (req, res) => {
  const user = await User.findById(req.userId).select("-password");
@@ -86,6 +89,13 @@ export const profile = async (req, res) => {
 }
 
 export const logout = (req, res) => {
- res.clearCookie("token");
- res.json({ message: "Logged out successfully" });
-}
+ res.clearCookie("token", {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "none",
+  path: "/"
+ });
+
+ res.status(200).json({ message: "Logged out successfully" });
+};
+
