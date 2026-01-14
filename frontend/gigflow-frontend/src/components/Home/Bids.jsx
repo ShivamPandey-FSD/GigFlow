@@ -10,8 +10,16 @@ function Bids() {
  const { user } = useAuth();
  const dispatch = useDispatch();
  const { loading, error } = useSelector((state) => state.bids);
+ const ITEMS_PER_PAGE = 20;
+ const [currentPage, setCurrentPage] = useState(1);
 
  const bids = useSelector(selectAllBids);
+ const paginatedBids = useMemo(() => {
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  return bids.slice(startIndex, endIndex);
+ }, [bids, currentPage]);
+ const totalPages = Math.ceil(bids.length / ITEMS_PER_PAGE);
 
  useEffect(() => {
   dispatch(fetchAllBids());
@@ -30,8 +38,8 @@ function Bids() {
      </tr>
     </thead>
     <tbody className="font-medium text-center">
-     {bids.length > 0 ? (
-      bids.map((bid) => (
+     {paginatedBids.length > 0 ? (
+      paginatedBids.map((bid) => (
        <tr>
         <td className="py-4">{bid.gigId.title}</td>
         <td className="py-4">{bid.gigId.description}</td>
@@ -47,6 +55,27 @@ function Bids() {
      )}
     </tbody>
    </table>
+   {paginatedBids.length > 0 && (<div className="flex justify-center items-center gap-4 mt-10">
+ <button
+  disabled={currentPage === 1}
+  onClick={() => setCurrentPage((p) => p - 1)}
+  className="px-4 py-2 border rounded disabled:opacity-50"
+ >
+  Prev
+ </button>
+
+ <span className="font-semibold">
+  Page {currentPage} of {totalPages}
+ </span>
+
+ <button
+  disabled={currentPage === totalPages}
+  onClick={() => setCurrentPage((p) => p + 1)}
+  className="px-4 py-2 border rounded disabled:opacity-50"
+ >
+  Next
+ </button>
+</div>)}
   </div>
  )
 }
